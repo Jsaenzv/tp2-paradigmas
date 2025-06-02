@@ -1,0 +1,164 @@
+@startuml
+package "Modelo" {
+  abstract class Carta {
+    -nombre: String
+    -esBocaArriba: boolean
+    +jugar()
+    +descartar()
+  }
+
+  class CartaMonstruo {
+    -nivel: int
+    -atk: int
+    -def: int
+    -elemento: Elemento
+    -atributo: Atributo
+    -posicion: Posicion
+    +invocar()
+    +cambiarPosicion()
+    +destruir()
+  }
+
+  class CartaHechizo {
+    -tipo: TipoHechizo
+    -efecto: Efecto
+    -duracion: int
+    +activar()
+  }
+
+  class CartaTrampa {
+    -efecto: Efecto
+    -condicionActivacion: Condicion
+    +colocar()
+    +activar()
+  }
+
+  interface Efecto {
+    +aplicar()
+  }
+
+  interface Condicion {
+    +seCumple(): boolean
+  }
+
+  class Jugador {
+    -nombre: String
+    -puntosVida: int
+    -mano: List<Carta>
+    +robarCarta()
+    +invocarMonstruo()
+    +activarHechizo()
+    +activarTrampa()
+    +atacar()
+    +rendirse()
+  }
+
+  class Mazo {
+    -cartas: List<Carta>
+    +mezclar()
+    +robar(): Carta
+    +estaVacio(): boolean
+  }
+
+  class Cementerio {
+    -cartas: List<Carta>
+    +agregarCarta(Carta)
+    +obtenerCarta(): Carta
+  }
+
+  class Tablero {
+    -casillerosMonstruos: CartaMonstruo[5]
+    -casillerosHechizosTrampas: Carta[5]
+    -zonaCampo: CartaHechizo
+    -mazo: Mazo
+    -cementerio: Cementerio
+    +colocarMonstruo()
+    +colocarHechizoTrampa()
+    +limpiarCasillero()
+  }
+
+  class Juego {
+    -jugadores: Jugador[2]
+    -jugadorActual: Jugador
+    -tablero: Tablero
+    -turno: Turno
+    +iniciar()
+    +siguienteTurno()
+    +verificarCondicionVictoria(): Jugador
+    +finalizarJuego()
+  }
+
+  class Turno {
+    -fase: Fase
+    -jugador: Jugador
+    +ejecutarFase()
+    +siguienteFase()
+  }
+
+  enum Elemento {
+    Fuego, Agua, Viento, Tierra, Oscuridad, Luz
+  }
+
+  enum Atributo {
+    Guerrero, Dragón, Zombie, Bestia, Hada, Máquina
+  }
+
+  enum Posicion {
+    Ataque, Defensa
+  }
+
+  enum TipoHechizo {
+    Normal, Equipo, Robo, Defensivo, Campo
+  }
+
+  enum Fase {
+    Robo, Standby, InvocarMonstruo, ActivarHechizo, ColocarCarta, Batalla, Cambios, Final
+  }
+}
+
+package "Vista" {
+  class Vista {
+    +mostrarEstadoJuego(Juego)
+    +mostrarMenu(List<Opcion>): Opcion
+    +mostrarError(String)
+  }
+}
+
+package "Controlador" {
+  class Controlador {
+    -juego: Juego
+    -vista: Vista
+    +iniciarJuego()
+    +manejarAccionJugador(Jugador, Opcion)
+    +actualizarEstadoJuego()
+  }
+}
+
+Carta <|.. CartaMonstruo
+Carta <|.. CartaHechizo
+Carta <|.. CartaTrampa
+CartaHechizo "1" --> "1" TipoHechizo
+CartaMonstruo "1" --> "1" Posicion
+CartaMonstruo "1" --> "1" Elemento
+CartaMonstruo "1" --> "1" Atributo
+CartaHechizo "1" --> "1" Efecto
+CartaTrampa "1" --> "1" Efecto
+Condicion <|.. CartaTrampa
+Jugador "1" --> "1" Mazo
+Jugador "1" --> "1" Cementerio
+Jugador "1" --> "*" Carta : mano
+Jugador "2" --> "1" Tablero
+Juego "1" --> "2" Jugador
+Juego "1" --> "1" Tablero
+Juego "1" --> "1" Turno
+Turno "1" --> "1" Fase
+Tablero "1" --> "5" CartaMonstruo : casillerosMonstruos
+Tablero "1" --> "5" Carta : casillerosHechizosTrampas
+Tablero "1" --> "1" CartaHechizo : zonaCampo
+Tablero "1" --> "1" Mazo
+Tablero "1" --> "1" Cementerio
+Controlador "1" --> "1" Juego
+Controlador "1" --> "1" Vista
+Vista --> Juego
+
+@enduml
