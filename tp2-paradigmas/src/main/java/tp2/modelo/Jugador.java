@@ -1,4 +1,4 @@
-package tp2.paradigmas.modelo;
+package main.java.tp2.modelo;
 import java.util.ArrayList;
 
 public class Jugador {

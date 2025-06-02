@@ -1,4 +1,4 @@
-package tp2.paradigmas.modelo;
+package main.java.tp2.modelo;
 
 public class InvocarMonstruo implements AccionTurno {
     CartaEnCampo cartaEnCampo;
