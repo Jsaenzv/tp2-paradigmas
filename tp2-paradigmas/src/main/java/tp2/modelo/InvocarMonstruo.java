@@ -1,10 +1,12 @@
-package main.java.tp2.modelo;
+package tp2.modelo;
 
 public class InvocarMonstruo implements AccionTurno {
-    CartaEnCampo cartaEnCampo;
+    private CartaEnCampo carta;
+
+    public InvocarMonstruo(CartaEnCampo cartaEnCampo) {this.carta = cartaEnCampo;}
 
     @Override
     public void ejecutar(Turno turno) {
-        turno.getJugador().invocarMonstruo(cartaEnCampo);
+        turno.getJugador().invocarMonstruo((MonstruoEnCampo) carta);
     }
 }

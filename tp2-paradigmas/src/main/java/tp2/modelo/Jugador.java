@@ -1,5 +1,6 @@
-package main.java.tp2.modelo;
+package tp2.modelo;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Jugador {
     private String nombre;
@@ -64,5 +65,7 @@ public class Jugador {
     public void atacar(MonstruoEnCampo monstruoAtacante, MonstruoEnCampo monstruoDefensor) {
         juego.resolverAtaque(this, monstruoAtacante, monstruoDefensor);
     }
+
+    public List<Carta> getMano() { return this.mano; }
 
 }

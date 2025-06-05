@@ -1,4 +1,4 @@
-package main.java.tp2.modelo;
+package tp2.modelo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -1,5 +1,5 @@
-package main.java.tp2.modelo;
+package tp2.modelo;
 
-public class Cementerio extends org.example.Mazo {
+public class Cementerio extends Mazo {
     public Cementerio(){ super(); }
 }

@@ -1,4 +1,4 @@
-package main.java.tp2.modelo;
+package tp2.modelo;
 
 public class MonstruoEnCampo implements CartaEnCampo {
     private final CartaMonstruo carta;
