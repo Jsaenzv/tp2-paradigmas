@@ -2,7 +2,6 @@ package tp2.controlador;
 import tp2.modelo.*;
 import tp2.vista.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Controlador {
     }
 
     private void fasePrincipal() {
-        List<CartaMonstruo> monstruosEnMano= new ArrayList<>();
+        List<CartaMonstruo> monstruosEnMano = new ArrayList<>();
         List<CartaHechizo> hechizosEnMano = new ArrayList<>();
         List<AccionTurno> accionesAEjecutar = new ArrayList<>();
         List<HechizoTrampaEnCampo> hechizosTrampaEnCampo = new ArrayList<>();
@@ -99,13 +98,58 @@ public class Controlador {
         this.juego.avanzarTurno(accionesAEjecutar);
     }
 
+    private List<MonstruoEnCampo>  monstruosAtacantes(boolean atacan, Jugador jugador) {
+        List<MonstruoEnCampo> monstruosEnCampoDisponibles = new ArrayList<>();
+        Set<Integer> montruosElegidosParaPelear = new HashSet<>();
+
+        for(MonstruoEnCampo monstruo : jugador.getMonstruosEnTablero()) {
+            if(monstruo.estaBocaArriba()) {
+                if(atacan && monstruo.estaEnModoAtaque()) {
+                    monstruosEnCampoDisponibles.add(monstruo);
+                }else if(!atacan) {
+                    monstruosEnCampoDisponibles.add(monstruo);
+                }
+            }
+        }
+
+        Integer monstruoElegido = vista.elegirMonstruoParaPelear(monstruosEnCampoDisponibles);
+        while(monstruoElegido >= 0) {
+            while(montruosElegidosParaPelear.contains(monstruoElegido)) {
+                vista.imprimirError("Ya elegiste a esta carta. Elegí otra");
+                monstruoElegido = vista.elegirMonstruoParaPelear(monstruosEnCampoDisponibles);
+                if (monstruoElegido < 0) break;
+            }
+            if (monstruoElegido < 0) break;
+
+            montruosElegidosParaPelear.add(monstruoElegido);
+            monstruoElegido = vista.elegirMonstruoParaPelear(monstruosEnCampoDisponibles);
+        }
+
+        return monstruosEnCampoDisponibles;
+    }
+
+    private void faseBatalla() {
+        if(!vista.confirmarAccion("Queres pelear?")) {
+            this.juego.avanzarTurno(new AccionNula());
+        }
+
+        List<MonstruoEnCampo> monstruosAtacantesElegidos = monstruosAtacantes(true, this.juego.getJugadorActual());
+        if(monstruosEnCampoDisponibles.isEmpty()) {
+            this.juego.avanzarTurno(new AccionNula());
+        }
+
+        List<MonstruoEnCampo> monstruosDefensores = monstruosAtacantes(false, this.juego.getOponente());
+
+        this.juego.avanzarTurno(new RealizarBatalla());
+    }
+
     public void iniciarJuego() {
         AccionNula accionNula = new AccionNula();
         while(!juego.verificarCondicionVictoria().hayGanador()) {
             this.juego.avanzarTurno(accionNula);
             this.juego.avanzarTurno(accionNula);
             fasePrincipal();
-
+            faseBatalla();
         }
     }
 
