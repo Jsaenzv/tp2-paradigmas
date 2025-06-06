@@ -1,9 +1,9 @@
 package main.java.tp2.modelo;
 
-public class AccionNula implements AccionTurno {
+public class AccionNula implements AccionUsuario, AccionFasePrincipal {
 
     @Override
-    public void ejecutar(Turno turno) {
+    public void ejecutarAccion(Turno turno) {
 
     }
 }
