@@ -93,4 +93,7 @@ public class Jugador {
         throw new IllegalStateException("No se encontró un oponente para el jugador " + this.nombre);
     }
 
+    public void colocarCartaHechizoTrampa(HechizoTrampaEnCampo carta) {
+        tableroPropio.colocarHechizoTrampa(carta);
+    }
 }
