@@ -100,7 +100,7 @@ public class Tablero {
     }
 
     public Carta robarCarta() {
-        mazo.robar();
+        return mazo.robar();
     }
 
 }
