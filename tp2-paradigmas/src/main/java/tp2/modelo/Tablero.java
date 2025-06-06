@@ -5,14 +5,14 @@ import java.util.List;
 public class Tablero {
     private static final int MAX_MONSTRUOS = 5;
     private static final int MAX_HECHIZOTRAMPA = 5;
-    private List<MonstruoEnCampo> casillerosMonstruos;
-    private List<HechizoTrampaEnCampo> casillerosHechizosTrampa;
-    private Mazo mazo;
-    private Mazo cementerio;
+    private final List<MonstruoEnCampo> casillerosMonstruos;
+    private final List<HechizoTrampaEnCampo> casillerosHechizosTrampa;
+    private final Mazo mazo;
+    private final Mazo cementerio;
 
     public Tablero() {
-        casillerosMonstruos = new ArrayList<MonstruoEnCampo>();
-        casillerosHechizosTrampa = new ArrayList<HechizoTrampaEnCampo>();
+        casillerosMonstruos = new ArrayList<>();
+        casillerosHechizosTrampa = new ArrayList<>();
         mazo = new Mazo();
         cementerio = new Mazo();
     }
@@ -63,8 +63,12 @@ public class Tablero {
         casillerosMonstruos.add(monstruo);
     }
 
-    public int cantidadMonstruos() {
-        return casillerosMonstruos.size();
+    public int espaciosMonstruos() {
+        return MAX_MONSTRUOS - casillerosMonstruos.size();
+    }
+
+    public int espaciosHechizos() {
+        return MAX_HECHIZOTRAMPA - espaciosMonstruos();
     }
 
     public void colocarHechizoTrampa(HechizoTrampaEnCampo hechizoTrampa) {
