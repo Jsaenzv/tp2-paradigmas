@@ -4,14 +4,16 @@ public class Turno {
     private EstadoTurno faseActual;
     private Juego juego;
     private Jugador jugador;
+    private Integer turno;
 
     public Turno(Jugador jugador, Juego juego) {
         this.juego = juego;
         this.jugador = jugador;
         this.faseActual = new FaseRobo();
+        this.turno = 1;
     }
 
-    public void avanzar(AccionTurno accion) {
+    public void avanzar(AccionUsuario accion) {
         faseActual.ejecutarFase(this, accion);
     }
 
@@ -33,4 +35,14 @@ public class Turno {
         this.juego = nuevaJuego;
     }
 
+    public EstadoTurno getFaseActual() {
+        return faseActual;
+    }
+
+    public Integer getNumeroTurno() {
+        return turno;
+    }
+    public void incrementarTurno() {
+        turno++;
+    }
 }
