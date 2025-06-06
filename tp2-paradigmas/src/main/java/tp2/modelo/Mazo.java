@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Mazo {
-    protected List<Carta> mazo;
+public class Mazo {
+    private List<Carta> mazo;
 
     public Mazo() {
         this.mazo = new ArrayList<>();
@@ -29,4 +29,5 @@ public abstract class Mazo {
     public Carta robar() {
         return this.mazo.getFirst();
     }
+
 }
