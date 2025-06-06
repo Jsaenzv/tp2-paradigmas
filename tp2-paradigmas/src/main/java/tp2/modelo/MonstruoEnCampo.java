@@ -1,14 +1,26 @@
 package main.java.tp2.modelo;
 
-public class MonstruoEnCampo implements CartaEnCampo {
+public class MonstruoEnCampo extends Carta implements CartaEnCampo {
     private final CartaMonstruo carta;
     private boolean estaBocaArriba;
     private ModoCarta modo;
+    private Jugador propietario;
+    private Integer turnoColocada;
 
     public MonstruoEnCampo(CartaMonstruo carta, boolean estaBocaArriba, ModoCarta modo) {
+        super(carta.getNombre());
         this.carta = carta;
         this.estaBocaArriba = estaBocaArriba;
         this.modo = modo;
+    }
+
+    @Override
+    public Integer getTurnoColocada() {
+        return 0;
+    }
+
+    public ModoCarta getModo() {
+        return modo;
     }
 
     public void cambiarModo(ModoCarta nuevoModo) {
@@ -19,7 +31,7 @@ public class MonstruoEnCampo implements CartaEnCampo {
         return modo.esAtaque();
     }
 
-    public CartaMonstruo getCarta() {
+    public Carta getCarta() {
         return carta;
     }
 
@@ -32,11 +44,15 @@ public class MonstruoEnCampo implements CartaEnCampo {
     }
 
     @Override
-    public String toString() {
-        return "CartaEnCampo{" +
-                "carta=" + carta +
-                ", visibilidad=" + visibilidad +
-                ", modo=" + modo +
-                '}';
+    public Jugador getPropietario() {
+        return propietario;
+    }
+
+    public int getNivel() {
+        return carta.getNivel();
+    }
+
+    public String getNombre() {
+        return carta.getNombre();
     }
 }
