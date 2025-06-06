@@ -1,7 +1,9 @@
 package main.java.tp2.modelo;
+import java.util.List;
 import java.util.ArrayList;
 
 public class Jugador {
+    public static final Object MAX_MAGIA_TRAMPA = 5;
     private String nombre;
     private Integer puntosVida;
     private List<Carta> mano;
@@ -10,12 +12,10 @@ public class Jugador {
 
     public Jugador() {}
 
-    public Jugador(String nombre, Tablero tableroPropio, Juego juego) {
+    public Jugador(String nombre) {
         this.nombre = nombre;
         this.puntosVida = 8000;
         this.mano = new ArrayList<Carta>();
-        this.tableroPropio = tableroPropio;
-        this.juego = juego;
     }
 
     public Integer getPuntosVida() {
@@ -40,29 +40,57 @@ public class Jugador {
     }
 
     public Carta robarCarta() {
-        tableroPropio.robarCarta();
+        return tableroPropio.robarCarta();
     }
 
-    public void invocarMonstruo(MonstruoEnCampo monstruo) {
-        tableroPropio.colocarMonstruo(monstruo);
+    public void invocarMonstruo(MonstruoEnCampo monstruoInvocado, List<MonstruoEnCampo> monstruosSacrificados) {
+        tableroPropio.colocarMonstruo(monstruoInvocado, monstruosSacrificados);
     }
 
     public void activarHechizo(CartaHechizo hechizo) {
-        tableroPropio.colocarHechizoTrampa(new HechizoTrampaEnCampo(hechizo, VisibilidadCarta.BOCA_ARRIBA));
-        hechizo.resolverEfecto(juego);
+        tableroPropio.colocarHechizoTrampa(new HechizoEnCampo(hechizo, true, this));
+        hechizo.aplicarEfecto(juego);
     }
 
-    public void activarTrampa(CartaHechizo trampa) {
-        tableroPropio.colocarHechizoTrampa(new HechizoTrampaEnCampo(trampa, VisibilidadCarta.BOCA_ARRIBA));
-        trampa.resolverEfecto(juego);
+    public void activarTrampa(CartaTrampa trampa) {
+        tableroPropio.colocarHechizoTrampa(new TrampaEnCampo(trampa, true, this));
+        trampa.aplicarEfecto(juego);
     }
 
     public void rendirse() {
         juego.rendirJugador(this);
     }
 
-    public void atacar(MonstruoEnCampo monstruoAtacante, MonstruoEnCampo monstruoDefensor) {
-        juego.resolverAtaque(this, monstruoAtacante, monstruoDefensor);
+
+    public void setJuego(Juego juego) {
+        this.juego = juego;
+    }
+    public Juego getJuego() {
+        return juego;
+    }
+    public void setTableroPropio(Tablero tableroPropio) {
+        this.tableroPropio = tableroPropio;
+    }
+
+    public List<Carta> getMano() {
+        return mano;
+    }
+
+    public void enviarAlCementerio(HechizoTrampaEnCampo cartaEnCampo) {
+
+    }
+
+    public Tablero getTableroPropio() {
+        return tableroPropio;
+    }
+
+    public Jugador getOponente() {
+        for (Jugador jugador : juego.getJugadores()) {
+            if (!jugador.equals(this)) {
+                return jugador;
+            }
+        }
+        throw new IllegalStateException("No se encontró un oponente para el jugador " + this.nombre);
     }
 
 }
