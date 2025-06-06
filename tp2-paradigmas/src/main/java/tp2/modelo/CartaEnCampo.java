@@ -8,4 +8,7 @@ public interface CartaEnCampo {
 
     void ponerBocaArriba();
 
+    Jugador getPropietario();
+
+    Integer getTurnoColocada();
 }
